@@ -8,18 +8,19 @@
     <div id="app">
         {{name}}
     </div>
-    <script src="./js/Dependency.js></script>
+    <script src="./js/Dependency.js"></script>
     <script src="./js/Observer.js"></script>
     <script src="./js/Watch.js"></script>
     <script src="./js/Compile.js"></script>
     <script src="./js/Vue.js"></script>
     <script type="text/javascript">
-        var vm = new Vue({
+        let vue = new Vue({
             el: '#app',
             data: {
                 name: 'jackie'
             }
         })
+        window.vue = vue;
     </script>
 </body>
 </html>

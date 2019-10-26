@@ -1,16 +1,12 @@
-var compileUtil = {
-    text: function(node, vm, exp) {
-        this.bind(node, vm, exp, 'text');
-    }
-}
 class Compile {
-    constructor(el, vm) {
-        this.$vm = vm;
+    constructor(el, vue) {
+        this.$vue = vue; // 拷贝vue实例，之所以加$符号，表示暴露给用户的
         this.$el = document.querySelector(el);
         if(this.$el) {
             // 在$fragment中操作，比this.$el中操作节省很多性能，所以要赋值给fragment
-            $fragment = this.node2Fragment(this.$el);
-            this.compileText($fragment);
+            let $fragment = this.node2Fragment(this.$el); // 将vue模板的地方使用片段替代，这是为了便于在内存中操作
+            this.compileText($fragment.childNodes[0]); // 将模板中的{{}}替换成对应的变量
+            this.$el.appendChild($fragment); // 将替换好的片段追加到vue模板中去
         }
     }
     node2Fragment(el) {
@@ -22,10 +18,11 @@ class Compile {
 
     compileText(node) {
         // 对包含可能出现vue标识的部分进行编译，主要是将{{xxx}}翻译成对应的值
-        var reg = /\{\(.*)\}\}/; // 用来判断有没有vue的双括号的
+        var reg = /\{\{(.*)\}\}/; // 用来判断有没有vue的双括号的
         if(reg.test(node.textContent)) {
-            node.textContent = this.$vm[RegExp.$1];
-            new Watch(this.$vm, exp, function(value) {
+            let matchedName = RegExp.$1;
+            node.textContent = this.$vue[matchedName];
+            new Watch(this.$vue, matchedName, function(value) {
                 node.textContent = value;
             });
         }

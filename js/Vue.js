@@ -1,17 +1,15 @@
 class Vue {
     constructor(options) {
-        this.$options = options || {};
-        this._data = data = this.$options.data;
+        let data = this._data = options.data || undefined;
         this._initData(); // 将data中的数据都挂载到this上去
-        new Observer(data, this);
-        this.$compile = new Compile(options.el, this);
+        new Observer(data); // 将data中的数据都进行双向绑定监控
+        new Compile(options.el, this); // 将{{name}}这样的模板，使用data中的数据替换掉
     }
     _initData() {
+        // 这个函数的功能很简单，就是把用户定义在data中的变量，都挂载到Vue实例上
         let that = this;
         Object.keys(that._data).forEach((key) => {
             Object.defineProperty(that, key, {
-                configurable: false,
-                enumerable: false,
                 get: () => {
                     return that._data[key];
                 },
