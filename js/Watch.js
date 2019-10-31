@@ -3,13 +3,18 @@ class Watch {
         this.vue = vue;
         this.exp = exp;
         this.cb = cb;
-        this.hasAddedAsSub = false; // 有没有被添加到Dep中的Subscriber中去，有的话就不需要重复添加
+        Watcher = this; // 将当前实例watch放入到Watcher中，移动到这是为了防止update调用get时，反复向Dep依赖中添加
         this.value = this.get(); // 得到当前vue实例上对应表达式exp的最新的值
+        Watcher = null; // 将Watcher置空，让给下一个值
     }
     get() {
-        Watcher = this; // 将当前实例watch放入到Watcher中
-        var value = this.vue[this.exp];
-        Watcher = null; // 将Watcher置空，让给下一个值
+        var exps = this.exp.split('.');
+        var obj = this.vue;
+        for (var i = 0, len = exps.length; i < len; i++) {
+            if (!obj) return;
+            obj = obj[exps[i]];
+        }
+        var value = obj;
         return value;
     }
     update() {

@@ -9,7 +9,7 @@ class Compile {
             this.$el.appendChild($fragment); // 将替换好的片段追加到vue模板中去
         }
     }
-    
+
     node2Fragment(el) {
         // 将node节点都放到fragment中去
         var fragment  = document.createDocumentFragment();
@@ -47,14 +47,19 @@ class Compile {
             if(attrName.indexOf('v-') == 0) {
                 // 当为自定义的控件指令时
                 var exp = attr.value; // 得到v-model = "name"中的model
-                var val = that.$vue[exp]; // 得到name在$vue中存放的值
+                new Watch(that.$vue, exp, function(value) {
+                    node.value = value;
+                });
+                var val = that._getVueVal(that.$vue, exp); // 得到name在$vue中存放的值
                 node.value = val; // 绑定值到input上去
+
                 node.addEventListener('input', (e) => {
                     var newValue = e.target.value;
                     if (val === newValue) {
                         return;
                     }
-                    that.$vue[exp] = newValue;
+                    that._setVueVal(that.$vue, exp, newValue);
+                    val = newValue;
                 });
                 node.removeAttribute(attrName);
             } else {
@@ -65,9 +70,31 @@ class Compile {
 
     compileText(node, matchedName) {
         // 对包含可能出现vue标识的部分进行编译，主要是将{{xxx}}翻译成对应的值
-        node.textContent = this.$vue[matchedName];
+        node.textContent = this._getVueVal(this.$vue, matchedName);
         new Watch(this.$vue, matchedName, function(value) {
             node.textContent = value;
+        });
+    }
+
+    _getVueVal(vue, exp) {
+        var val = vue;
+        exp = exp.split('.');
+        exp.forEach(function(k) {
+            val = val[k];
+        });
+        return val;
+    }
+
+    _setVueVal(vue, exp, value) {
+        var val = vue;
+        exp = exp.split('.');
+        exp.forEach(function(k, i) {
+            // 非最后一个key，更新val的值
+            if (i < exp.length - 1) {
+                val = val[k];
+            } else {
+                val[k] = value;
+            }
         });
     }
 }
