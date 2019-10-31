@@ -44,9 +44,14 @@ class Compile {
         // Element.attributes 属性返回该元素所有属性节点的一个实时集合。该集合是一个 NamedNodeMap 对象，不是一个数组，所以它没有 数组 的方法，其包含的 属性 节点的索引顺序随浏览器不同而不同。更确切地说，attributes 是字符串形式的名/值对，每一对名/值对对应一个属性节点。所以这边不能够使用attributes.foreach
         [].slice.call(nodeAttrs).forEach(attr => {
             var attrName = attr.name;// 得到v-model
-            if(attrName.indexOf('v-') == 0) {
+            var exp = attr.value; // 得到v-model = "name"中的name
+            var dir = attrName.substring(2); //得到指令，如model,on:click之类的
+            if(dir.indexOf('on') === 0) {
+                // 当为点击事件的时候
+                var fn = that.$vue.$options.methods && that.$vue.$options.methods[exp];
+                node.addEventListener('click', fn.bind(that.$vue), false);
+            } else if(attrName.indexOf('v-') == 0) {
                 // 当为自定义的控件指令时
-                var exp = attr.value; // 得到v-model = "name"中的model
                 new Watch(that.$vue, exp, function(value) {
                     node.value = value;
                 });
@@ -62,7 +67,7 @@ class Compile {
                     val = newValue;
                 });
                 node.removeAttribute(attrName);
-            } else {
+            } else{
 
             }
         })

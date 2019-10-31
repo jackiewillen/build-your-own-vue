@@ -6,8 +6,7 @@
 </head>
 <body>
     <div id="app">
-        {{dog.name}}
-        <input type="text" v-model="dog.name">
+        <button v-on:click="clickBtn">触发事件</button>
     </div>
     <script src="./js/Dependency.js"></script>
     <script src="./js/Observer.js"></script>
@@ -18,8 +17,11 @@
         let vue = new Vue({
             el: '#app',
             data: {
-                dog: {
-                    name: 'titi'
+            },
+            methods: {
+                clickBtn: function(e) {
+                    alert(1);
+                    console.log(e);
                 }
             }
         })

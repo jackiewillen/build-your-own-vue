@@ -1,5 +1,6 @@
 class Vue {
     constructor(options) {
+        this.$options =  options || {};
         let data = this._data = options.data || undefined;
         this._initData(); // 将data中的数据都挂载到this上去
         new Observer(data); // 将data中的数据都进行双向绑定监控
