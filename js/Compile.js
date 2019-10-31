@@ -43,33 +43,47 @@ class Compile {
         var that = this;
         // Element.attributes 属性返回该元素所有属性节点的一个实时集合。该集合是一个 NamedNodeMap 对象，不是一个数组，所以它没有 数组 的方法，其包含的 属性 节点的索引顺序随浏览器不同而不同。更确切地说，attributes 是字符串形式的名/值对，每一对名/值对对应一个属性节点。所以这边不能够使用attributes.foreach
         [].slice.call(nodeAttrs).forEach(attr => {
-            var attrName = attr.name;// 得到v-model
-            var exp = attr.value; // 得到v-model = "name"中的name
+            var attrName = attr.name;// 得到属性的名称
+            var exp = attr.value; // 得到属性的值
             var dir = attrName.substring(2); //得到指令，如model,on:click之类的
-            if(dir.indexOf('on') === 0) {
-                // 当为点击事件的时候
-                var fn = that.$vue.$options.methods && that.$vue.$options.methods[exp];
-                node.addEventListener('click', fn.bind(that.$vue), false);
-            } else if(attrName.indexOf('v-') == 0) {
+            if(attrName.indexOf('v-') == 0) {
                 // 当为自定义的控件指令时
-                new Watch(that.$vue, exp, function(value) {
-                    node.value = value;
-                });
-                var val = that._getVueVal(that.$vue, exp); // 得到name在$vue中存放的值
-                node.value = val; // 绑定值到input上去
+                if(dir.indexOf('on') === 0) {
+                    // 表示是点击事件的时候
+                    var fn = that.$vue.$options.methods && that.$vue.$options.methods[exp];
+                    node.addEventListener('click', fn.bind(that.$vue), false);
+                } else if(dir.indexOf('model') === 0) {
+                    // 表示是绑定model值时
+                    new Watch(that.$vue, exp, function(value) {
+                        node.value = value;
+                    });
+                    var val = that._getVueVal(that.$vue, exp); // 得到name在$vue中存放的值
+                    node.value = val; // 绑定值到input上去
+    
+                    node.addEventListener('input', (e) => {
+                        var newValue = e.target.value;
+                        if (val === newValue) {
+                            return;
+                        }
+                        that._setVueVal(that.$vue, exp, newValue);
+                        val = newValue;
+                    });
+                    node.removeAttribute(attrName);
+                } else if(dir.indexOf('bind') === 0) {
+                    // 表示是绑定class的样式时
+                    var className = node.className;
+                    var value = this._getVueVal(that.$vue, exp);
+                    var space = className && String(value) ? ' ' : '';
+                    node.className = className + space + value;
 
-                node.addEventListener('input', (e) => {
-                    var newValue = e.target.value;
-                    if (val === newValue) {
-                        return;
-                    }
-                    that._setVueVal(that.$vue, exp, newValue);
-                    val = newValue;
-                });
-                node.removeAttribute(attrName);
-            } else{
-
-            }
+                    new Watch(that.$vue, exp, function(value, oldValue) {
+                        var className = node.className;
+                        className = className.replace(oldValue, '');
+                        var space = className && String(value) ? ' ' : '';
+                        node.className = className + space + value;
+                    });
+                }
+            } else{}
         })
     }
 

@@ -3,10 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <style type="text/css">
+    .my-class {
+        color: orange;
+    }
+    .your-class {
+        color: red;
+    }
+    </style>
 </head>
 <body>
     <div id="app">
-        <button v-on:click="clickBtn">触发事件</button>
+        <p v-bind:class="className" class="abc">
+            1234
+        </p>
     </div>
     <script src="./js/Dependency.js"></script>
     <script src="./js/Observer.js"></script>
@@ -17,12 +27,7 @@
         let vue = new Vue({
             el: '#app',
             data: {
-            },
-            methods: {
-                clickBtn: function(e) {
-                    alert(1);
-                    console.log(e);
-                }
+                className: 'my-class'
             }
         })
         window.vue = vue;

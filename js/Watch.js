@@ -20,7 +20,7 @@ class Watch {
     update() {
         let value = this.get();
         let oldVal = this.value;
-        if(value !== oldVal) {  
+        if(value !== oldVal) {
             this.value = value;
             this.cb.call(this.vue, value); // 将于此变量相关的回调函数全部执行掉
         }
