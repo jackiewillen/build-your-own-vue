@@ -5,6 +5,7 @@ class Vue {
         this._initData(); // 将data中的数据都挂载到this上去
         this._initComputed();// 将data中的计算属性挂载到this上去
         new Observer(data); // 将data中的数据都进行双向绑定监控
+        this._initWatch(); // 添加监控到对应的变量下
         new Compile(options.el, this); // 将{{name}}这样的模板，使用data中的数据替换掉
     }
     _initData() {
@@ -23,12 +24,19 @@ class Vue {
     }
     _initComputed() {
         var that = this;
-        var computed = that.$options.computed;
+        var computed = that.$options.computed || {};
         Object.keys(computed).forEach(function(key) {
             Object.defineProperty(that, key, {
                 get: computed[key],
                 set: function() {}
             });
         });
+    }
+    _initWatch() {
+        var that = this;
+        var watch = that.$options.watch;
+        Object.keys(watch).forEach(function(key) {
+            new Watch(that, key, watch[key]);
+        })
     }
 }

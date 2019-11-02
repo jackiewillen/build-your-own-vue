@@ -6,7 +6,7 @@
 </head>
 <body>
     <div id="app">
-        {{getComputedVal}}
+        {{str}}
     </div>
     <script src="./js/Dependency.js"></script>
     <script src="./js/Observer.js"></script>
@@ -19,9 +19,9 @@
             data: {
                 str: 'jackie'
             },
-            computed: {
-                getComputedVal: function() {
-                    return this.str + ' ' + 'willen';
+            watch: {
+                str: function() {
+                    console.log('data.str被修改成了', this.str);
                 }
             }
         })
