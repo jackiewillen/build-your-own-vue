@@ -3,20 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <style type="text/css">
-    .my-class {
-        color: orange;
-    }
-    .your-class {
-        color: red;
-    }
-    </style>
 </head>
 <body>
     <div id="app">
-        <p v-bind:class="className" class="abc">
-            1234
-        </p>
+        {{getComputedVal}}
     </div>
     <script src="./js/Dependency.js"></script>
     <script src="./js/Observer.js"></script>
@@ -27,7 +17,12 @@
         let vue = new Vue({
             el: '#app',
             data: {
-                className: 'my-class'
+                str: 'jackie'
+            },
+            computed: {
+                getComputedVal: function() {
+                    return this.str + ' ' + 'willen';
+                }
             }
         })
         window.vue = vue;

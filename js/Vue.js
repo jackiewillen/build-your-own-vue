@@ -3,6 +3,7 @@ class Vue {
         this.$options =  options || {};
         let data = this._data = options.data || undefined;
         this._initData(); // 将data中的数据都挂载到this上去
+        this._initComputed();// 将data中的计算属性挂载到this上去
         new Observer(data); // 将data中的数据都进行双向绑定监控
         new Compile(options.el, this); // 将{{name}}这样的模板，使用data中的数据替换掉
     }
@@ -18,6 +19,16 @@ class Vue {
                     that._data[key] = newVal;
                 }
             })
+        });
+    }
+    _initComputed() {
+        var that = this;
+        var computed = that.$options.computed;
+        Object.keys(computed).forEach(function(key) {
+            Object.defineProperty(that, key, {
+                get: computed[key],
+                set: function() {}
+            });
         });
     }
 }
