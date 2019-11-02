@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <style>
+        .blue {
+            color: blue;
+        }
+        .red {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        {{str}}
+        双向绑定演示：{{str}}<br>
+        v-model演示：<input type="text" v-model="dog.name"><br>
+        多层级属性演示：{{dog.name}}<br>
+        <p v-bind:class="className" class="abc">
+            动态class功能的演示
+        </p>
+        计算属性演示：{{getComputedValue}}<br>
+        点击事件演示： <button v-on:click="clickBtn">快来点我</button>
     </div>
     <script src="./js/Dependency.js"></script>
     <script src="./js/Observer.js"></script>
@@ -17,15 +32,33 @@
         let vue = new Vue({
             el: '#app',
             data: {
-                str: 'jackie'
+                str: 'jackie',
+                dog: {
+                    name: 'titi'
+                },
+                className: 'blue'
             },
             watch: {
                 str: function() {
                     console.log('data.str被修改成了', this.str);
                 }
+            }, 
+            computed: {
+                getComputedValue: function() {
+                    return this.str + ' ' + 'hahaha';
+                }
+            },
+            methods: {
+                clickBtn: function(e) {
+                    alert(e);
+                }
             }
         })
         window.vue = vue;
+        setTimeout(function() {
+            this.vue._data.className = 'red';
+            this.vue._data.str = 'hello';
+        }, 3000);
     </script>
 </body>
 </html>
