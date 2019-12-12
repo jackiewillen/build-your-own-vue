@@ -1,5 +1,5 @@
-Vue最精华的部分就是双向绑定，在双向绑定的基础上，又写了computed，watch, methods等方法。所以要看懂Vue内核，那第一步肯定就是要了解Vue双向绑定的原理，但是说实话，看了网上很多，好多代码都是经过重构优化后的代码，失去了代码原始的面貌，不太易于理解。所以决定写一个原始一点但是又尽可能简洁一点的，但是原理绝对是Vue双向绑定的原理，确保你看懂这篇文章，就能够了解Vue内核。采用最少的代码，来实现一个个功能。有什么写的不妥的地方，烦请在仓库issue中指出，我好及时修正。
-这个项目的github地址为[build-your-own-vue](https://github.com/jackiewillen/build-your-own-vue)
+&nbsp;&nbsp;&nbsp;&nbsp;Vue最精华的部分就是双向绑定，在双向绑定的基础上，又写了computed，watch, methods等方法。所以要看懂Vue内核，那第一步肯定就是要了解Vue双向绑定的原理，但是说实话，看了网上很多，好多代码都是经过重构优化后的代码，失去了代码原始的面貌，不太易于理解。所以决定写一个原始一点但是又尽可能简洁一点的，但是原理绝对是Vue双向绑定的原理，确保你看懂这篇文章，就能够了解Vue内核。采用最少的代码，来实现一个个功能。有什么写的不妥的地方，烦请在仓库issue中指出，我好及时修正。
+&nbsp;&nbsp;这个项目的github地址为[build-your-own-vue](https://github.com/jackiewillen/build-your-own-vue) 欢迎[star](https://github.com/jackiewillen/build-your-own-vue)
 
 如果你对当前流行的轮子的原理感兴趣，下面还有这些你也可以看看，有疑问欢迎在各个仓库下留言：
 
@@ -200,7 +200,7 @@ Vue最精华的部分就是双向绑定，在双向绑定的基础上，又写�
 		
 ![双向绑定结果](https://github.com/jackiewillen/blog/blob/master/images/%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A.gif?raw=true)
 
-怎么样，搞定了，其实，这只是Vue的冰山一角，在这个仓库中还实现了一系列vue的功能，如果你有兴趣可以一个commit一个commit的往下看，每个commit都只实现一个完整的细小的功能，而且代码量都尽可能的少，你如果想看一定能看懂。这仓库都是没有使用虚拟DOM来实现，更新颗粒度细，现在的Vue降低了更新的颗粒度，用了虚拟DOM，但是Vue中双向绑定的原理始终未变，所以这篇文章还是需要看懂的，老弟。以后有时间我再研究研究虚拟DOM写个仓库。
+怎么样，搞定了，其实，这只是Vue的冰山一角(下图中的绿色框框的部分)，在这个仓库中还实现了一系列vue的功能，如果你有兴趣可以一个commit一个commit的往上看，每个commit都只实现一个完整的细小的功能，而且代码量都尽可能的少，你如果想看一定能看懂。这仓库都是没有使用虚拟DOM来实现，更新颗粒度细，现在的Vue降低了更新的颗粒度，用了虚拟DOM，但是Vue中双向绑定的原理始终未变，所以这篇文章还是需要看懂的，老弟。以后有时间我再研究研究虚拟DOM写个仓库。
 
 ![123](https://github.com/jackiewillen/blog/blob/master/images/%E5%B0%8F%E5%9E%8Bvue.png?raw=true)
 
